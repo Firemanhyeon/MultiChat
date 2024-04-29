@@ -13,10 +13,11 @@ public class ChatServer {
             System.out.println("서버가 준비되었습니다.");
             Map<String, PrintWriter> chatClients = new HashMap<>();
             Map<Integer, List<String>> room = new HashMap<>();
+            PrintWriter pw = null;
             int count=0;
             while(true){
                 Socket socket = serverSocket.accept();
-                new ServerMessageWriter(socket , chatClients , room , count).start();
+                new ServerMessageWriter(socket , chatClients , room , count , pw).start();
             }
         }catch (Exception e){
             e.printStackTrace();
