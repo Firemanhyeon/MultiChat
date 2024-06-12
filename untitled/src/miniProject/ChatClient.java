@@ -26,7 +26,6 @@ public class ChatClient {
             synchronized (nickname){
                 out.println(nickname); // 서버에 닉네임을 전송
             }
-
             // 서버로부터 메시지를 읽어 화면에 출력하는 별도의 스레드
             Thread readThread = new Thread(new ServerMessageReader(in));
             readThread.start(); // 메시지 읽기 스레드 시작
@@ -41,16 +40,13 @@ public class ChatClient {
                     out.println(userInput);
                     break;
                 }
-
                 // 서버에 메시지를 전송합니다.
                 out.println(userInput);
             } // while
-
             // 클라이언트와 서버는 명시적으로 close를 합니다. close를 할 경우 상대방쪽의 readLine()이 null을 반환됩니다. 이 값을 이용하여 접속이 종료된 것을 알 수 있습니다.
             in.close();
             out.close();
             socket.close();
-
         } catch (IOException e) {
             System.out.println("Exception caught when trying to connect to " + hostName + " on port " + portNumber);
             e.printStackTrace();

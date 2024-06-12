@@ -66,7 +66,6 @@ public class ServerMessageWriter extends Thread{
     public void run() {
         String msg = null;
         try{
-
             while((msg = in.readLine())!=null){
                 if("/bye".equals(msg)){//프로그램종료
                     break;
@@ -104,7 +103,6 @@ public class ServerMessageWriter extends Thread{
                     joinUser.add(id);
                     room.put(idx,joinUser);
                     broadcast(idx,id+"님이"+ idx+"번 방에 참가하셨습니다.");
-//                    pw = new PrintWriter("roomTalk"+idx+".txt");
                 }else if("/exit".equals(msg)){//방나가기
                     List<String> exitUser = room.get(idx);
                     exitUser.remove(id);
@@ -137,7 +135,6 @@ public class ServerMessageWriter extends Thread{
                 else{
                     System.out.println(id + msg+"broadcast" );
                     broadcast(idx, id+": "+msg);
-//                    pw.println(id+": "+msg);
                 }
 
             }
@@ -158,7 +155,6 @@ public class ServerMessageWriter extends Thread{
                     throw new RuntimeException(e);
                 }
             }
-
             if(socket!=null){
                 try {
                     socket.close();
@@ -166,11 +162,8 @@ public class ServerMessageWriter extends Thread{
                     throw new RuntimeException(e);
                 }
             }
-//            pw.close();
         }
-
     }
-
     private void whisper(String msg) {
         int firstIndex = msg.indexOf(" ");
         if(firstIndex == -1)return;
@@ -186,7 +179,6 @@ public class ServerMessageWriter extends Thread{
             sendMsg(to+"유저가 현재 접속중이지 않거나 없는 유저입니다.");
         }
     }
-
     //전체발신
     public void broadcast(String msg){
         synchronized (chatClients){
@@ -212,7 +204,6 @@ public class ServerMessageWriter extends Thread{
     //톡방사람들끼리 발신
     public void broadcast(int roomId , String msg){
         List<String> participants = room.get(roomId);//id에 해당하는 닉네임 구하기
-        System.out.println("participants: "+participants);
         if(participants!=null){
             synchronized (chatClients){
                 for(String participant : participants){//닉네임
@@ -230,7 +221,7 @@ public class ServerMessageWriter extends Thread{
                 try{
                     pw = new PrintWriter(new FileWriter("roomTalk" + roomId + ".txt", true));
                     pw.println(msg);
-                } catch (IOException e) {
+                }catch (IOException e) {
                     e.printStackTrace();
                 }finally {
                     pw.close();
@@ -238,6 +229,4 @@ public class ServerMessageWriter extends Thread{
             }
         }
     }
-
-
 }
